@@ -1,0 +1,1 @@
+libFingerPopUi.so 指纹验证窗口接口，放在libgm3000.1.0.so同一目录即可，调用方式可查看示例

@@ -1,0 +1,5 @@
+#permission for HID devices
+SUBSYSTEM=="usb", ATTRS{idVendor}=="055c", MODE="0666"
+#permission for SCSI devices
+KERNEL=="s[grt][0-9]*",ATTRS{vendor}=="Longmai ",  MODE="0666"
+

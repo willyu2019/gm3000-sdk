@@ -1,0 +1,42 @@
+# Common build variables.
+
+VER			 = 
+OFFSET		 = 
+CC           = g++ 
+LD           = ld
+LDSO	     = $(CC) -shared -nostartfiles
+CFLAGS		 = -fPIC -shared $(OFFSET) -O2
+LINKFLAGS    = -lpthread -lz 
+#-lapdu -ldevmgr -lmk_lib -los -lpolarssl -lgm_api -framework Foundation -framework DiskArbitration  -framework IOKit
+MKDIR        = mkdir -p
+RM           = rm -f
+CP           = cp -fp
+ECHO         = echo
+FIND         = find
+MV           = mv -f
+LN           = ln -s
+AR           = ar -r
+ARFLAGS      = rv
+DEBUG        = 
+
+LIBSMAIN  +=  -L. 
+LINKFLAGS = ../lib/mac/x64/libgm3000.1.0.dylib
+OBJSMAIN    = main.o
+MAIN    = enumdevice
+
+# Complie all
+all: $(MAIN)
+$(MAIN): $(OBJSMAIN)
+	$(RM) $(MAIN)
+	$(CC) -o $(MAIN) $(OBJSMAIN) $(LIBSMAIN) $(LINKFLAGS)
+
+clean:
+	$(RM) $(MAIN)
+	$(RM) *.o $(MAIN)
+
+# Complie the source code 
+
+%.o: %.c
+	$(CC) -c -o $@ $? 
+%.o: %.cpp
+	$(CC) -c -o $@ $? 
