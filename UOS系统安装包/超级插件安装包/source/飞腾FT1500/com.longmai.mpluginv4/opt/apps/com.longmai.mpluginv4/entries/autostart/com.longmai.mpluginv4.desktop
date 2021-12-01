@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=/opt/apps/com.longmai.mpluginv4/files/script/run.sh
+Type=Application
+Terminal=false
+Name=mPluginV4
+GenericName=mPluginV4

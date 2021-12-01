@@ -1,0 +1,17 @@
+{
+  "appid": "com.longmai.gm3000admin",
+  "name": "GM3000Admin",
+  "version": "2.0.21.118",
+  "arch": [ "arm64" ],
+  "permissions": {
+    "autostart": true,
+    "notification": false,
+    "trayicon": true,
+    "clipboard": false,
+    "account": false,
+    "bluetooth": false,
+    "camera": false,
+    "audio_record": false,
+    "installed_apps": false
+  }
+}

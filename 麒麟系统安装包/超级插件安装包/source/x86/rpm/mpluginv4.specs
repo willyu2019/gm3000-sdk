@@ -1,0 +1,141 @@
+%define     buildroot %{_tmppath}/%{name}-root
+%define     debug_package %{nil}
+
+Summary:    mpluginv4   
+Name:       lm-mpluginv4
+Version:    2.0
+Release:    21.118
+
+
+SOURCE1:    mpluginv4
+
+
+License:    GPL
+Group:      Application
+
+%description
+This is key tool  making rpm package!
+
+
+%prep
+
+%install
+
+rm -rf %{buildroot}
+
+%{__install} -p -D -m 0777 %{SOURCE1}/90-lm-mtoken-plugin.rules		%{buildroot}/etc/udev/rules.d/90-lm-mtoken-plugin.rules
+%{__install} -p -D -m 0777 %{SOURCE1}/mpluginv4.desktop		    	%{buildroot}/etc/xdg/autostart/mpluginv4.desktop
+	
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/libdispatch.so			%{buildroot}/opt/mpluginv4/lib/libdispatch.so  	
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/libstd.so			    	%{buildroot}/opt/mpluginv4/lib/libstd.so  	
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/libgm3000.1.0.so			%{buildroot}/opt/mpluginv4/lib/libgm3000.1.0.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/mPluginV4			    	%{buildroot}/opt/mpluginv4/bin/mPluginV4
+	
+%{__install} -p -D -m 0777 %{SOURCE1}/server.key			    	%{buildroot}/opt/mpluginv4/conf/server.key	
+%{__install} -p -D -m 0777 %{SOURCE1}/server.pem			    	%{buildroot}/opt/mpluginv4/conf/server.pem
+%{__install} -p -D -m 0777 %{SOURCE1}/server.key			    	%{buildroot}/opt/mpluginv4/bin/server.key	
+%{__install} -p -D -m 0777 %{SOURCE1}/server.pem			    	%{buildroot}/opt/mpluginv4/bin/server.pem
+	
+%{__install} -p -D -m 0777 %{SOURCE1}/preinstall/install.sh			%{buildroot}/opt/mpluginv4/script/install.sh
+%{__install} -p -D -m 0777 %{SOURCE1}/run.sh			        	%{buildroot}/opt/mpluginv4/script/run.sh
+	
+%{__install} -p -D -m 0777 %{SOURCE1}/readme.filelist		    	%{buildroot}/opt/mpluginv4/doc/readme.filelist
+
+
+%pre
+	#安装前
+%post
+	#安装后
+	
+	cd /opt/mpluginv4/script
+	bash ./run.sh
+	
+	if [ -f /opt/mpluginv4/conf/server.pem ];then
+		if [ "$( which certutil )" = "" ];then
+			echo "插件服务安装成功。"
+		else
+			### For cert8 (legacy - DBM)
+			for certDB in $(find /home -name "cert8.db")
+			do
+			    certdir=$(dirname ${certDB});
+			    (certutil -A -n "mPluginCA" -t "TC,TC,TC" -i "/opt/mpluginv4/conf/server.pem" -d dbm:${certdir}  & )
+			done
+
+			### For cert9 (SQL)
+			for certDB in $(find /home -name "cert9.db")
+			do
+			    certdir=$(dirname ${certDB});
+			    (certutil -A -n "mPluginCA" -t "TC,TC,TC" -i "/opt/mpluginv4/conf/server.pem" -d sql:${certdir} &)
+			done
+		fi
+	fi
+
+
+%preun
+	#卸载前
+	pgrep mPluginV4
+	if [ $? -eq 0 ]; then
+		pkill mPluginV4
+	fi
+	
+	
+%postun
+	#卸载后
+	
+	if [ -d /opt/mpluginv4 ]; then
+		rm -rf /opt/mpluginv4
+	fi
+
+	if [ -f /etc/udev/rules.d/90-lm-mtoken-plugin.rules ]; then
+		rm /etc/udev/rules.d/90-lm-mtoken-plugin.rules
+	fi 
+	
+	if [ -f /etc/xdg/autostart/mpluginv4.desktop ]; then
+		rm  /etc/xdg/autostart/mpluginv4.desktop 
+	fi
+
+	if [ "$( which certutil )" = "" ];then
+		echo " "
+	else
+		### For cert8 (legacy - DBM)
+		for certDB in $(find /home -name "cert8.db")
+		do
+		    certdir=$(dirname ${certDB});
+		    #certutil -D -n "mPluginCA" -d dbm:${certdir}
+		done
+
+		### For cert9 (SQL)
+		for certDB in $(find /home -name "cert9.db")
+		do
+		    certdir=$(dirname ${certDB});
+		    #certutil -D -n "mPluginCA" -d dbm:${certdir}
+		done
+	fi
+
+	echo "---------remove ok----------"
+
+%files
+%defattr(-,root,root)
+#需要卸载的文件清单
+
+/etc/udev/rules.d/90-lm-mtoken-plugin.rules      
+/etc/xdg/autostart/mpluginv4.desktop      
+                                          
+/opt/mpluginv4/lib/libdispatch.so  	      
+/opt/mpluginv4/lib/libstd.so  	      
+/opt/mpluginv4/lib/libgm3000.1.0.so       
+                                                                       
+/opt/mpluginv4/bin/mPluginV4              
+                                          
+/opt/mpluginv4/conf/server.key	      
+/opt/mpluginv4/conf/server.pem            
+/opt/mpluginv4/bin/server.key	      
+/opt/mpluginv4/bin/server.pem                         
+                  
+/opt/mpluginv4/script/install.sh          
+/opt/mpluginv4/script/run.sh              
+
+/opt/mpluginv4/doc/readme.filelist
+
+%clean
+rm -rf %{buildroot}

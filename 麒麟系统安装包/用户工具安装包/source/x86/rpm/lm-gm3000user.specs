@@ -1,0 +1,231 @@
+%define     buildroot %{_tmppath}/%{name}-root
+%define     debug_package %{nil}
+
+Summary:    lm-gm3000user   
+Name:       lm-gm3000user
+Version:    2.0
+Release:    21.114
+
+SOURCE1:    lm-gm3000user
+
+License:    GPL
+Group:      Application
+
+%description
+
+%prep 
+
+%install
+
+rm -rf %{buildroot}
+
+#配置文件
+%{__install} -p -D -m 0777 %{SOURCE1}/config/90-lm-mtoken-user.rules			%{buildroot}/etc/udev/rules.d/90-lm-mtoken-user.rules
+%{__install} -p -D -m 0777 %{SOURCE1}/config/config.ini     	        		%{buildroot}/opt/lm-gm3000user/config/config.ini
+%{__install} -p -D -m 0777 %{SOURCE1}/config/customer.ini     	        		%{buildroot}/opt/lm-gm3000user/config/customer.ini
+%{__install} -p -D -m 0777 %{SOURCE1}/config/pv			     	        		%{buildroot}/opt/lm-gm3000user/config/pv
+
+#依赖库	
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libgm3000.1.0.so	    			%{buildroot}/opt/lm-gm3000user/lib/libgm3000.1.0.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libgm3000_pkcs11.so	    		%{buildroot}/opt/lm-gm3000user/lib/libgm3000_pkcs11.so
+
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libicudata.so.54	    			%{buildroot}/opt/lm-gm3000user/lib/libicudata.so.54
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libicui18n.so.54	    			%{buildroot}/opt/lm-gm3000user/lib/libicui18n.so.54
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libicuuc.so.54	    			%{buildroot}/opt/lm-gm3000user/lib/libicuuc.so.54
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libQt5Core.so.5	    			%{buildroot}/opt/lm-gm3000user/lib/libQt5Core.so.5
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libQt5DBus.so.5	    			%{buildroot}/opt/lm-gm3000user/lib/libQt5DBus.so.5
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libQt5Gui.so.5	    			%{buildroot}/opt/lm-gm3000user/lib/libQt5Gui.so.5
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libQt5Widgets.so.5    			%{buildroot}/opt/lm-gm3000user/lib/libQt5Widgets.so.5
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/lib/libQt5XcbQpa.so.5	    			%{buildroot}/opt/lm-gm3000user/lib/libQt5XcbQpa.so.5
+
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqwebp.so      %{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqwebp.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqwbmp.so  	%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqwbmp.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqtiff.so  	%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqtiff.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqtga.so  		%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqtga.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqmng.so  		%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqmng.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqjpeg.so  	%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqjpeg.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqjp2.so  		%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqjp2.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqico.so  		%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqico.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqicns.so  	%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqicns.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqgif.so  		%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqgif.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/imageformats/libqdds.so 		%{buildroot}/opt/lm-gm3000user/plugins/imageformats/libqdds.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/plugins/platforms/libqxcb.so  		%{buildroot}/opt/lm-gm3000user/plugins/platforms/libqxcb.so
+	
+#应用程序	
+%{__install} -p -D -m 0777 %{SOURCE1}/x86/bin/GM3000User	        			%{buildroot}/opt/lm-gm3000user/bin/GM3000User
+	
+#资源	
+%{__install} -p -D -m 0777 %{SOURCE1}/res/disk.qss       	        			%{buildroot}/opt/lm-gm3000user/image/disk.qss
+%{__install} -p -D -m 0777 %{SOURCE1}/res/LM_32.ico       	        			%{buildroot}/opt/lm-gm3000user/image/LM_32.ico
+%{__install} -p -D -m 0777 %{SOURCE1}/res/mToken.jpg       	        			%{buildroot}/opt/lm-gm3000user/image/mToken.jpg
+	
+#图标	
+%{__install} -p -D -m 0777 %{SOURCE1}/logo/logo.png          	    			%{buildroot}/opt/lm-gm3000user/logo/logo.png
+
+#脚本
+%{__install} -p -D -m 0777 %{SOURCE1}/script/AppRun.sh          	    		%{buildroot}/opt/lm-gm3000user/script/AppRun.sh
+%{__install} -p -D -m 0777 %{SOURCE1}/script/AppRunAuto.sh        	    		%{buildroot}/opt/lm-gm3000user/script/AppRunAuto.sh
+%{__install} -p -D -m 0777 %{SOURCE1}/script/lm-gm3000user.desktop 				%{buildroot}/opt/lm-gm3000user/script/lm-gm3000user.desktop
+%{__install} -p -D -m 0777 %{SOURCE1}/script/lm-gm3000user-auto.desktop 		%{buildroot}/etc/xdg/autostart/lm-gm3000user.desktop
+
+%pre
+	#安装前
+	
+%post
+	#安装后
+	APPNAME=lm-gm3000user
+	
+	DESKTOP=/opt/lm-gm3000user/script/lm-gm3000user.desktop
+	
+	if [ -d /usr/lib64 ]; then
+		cp /opt/lm-gm3000user/lib/libgm3000.1.0.so /usr/lib64/libgm3000.1.0.so
+	else
+		cp /opt/lm-gm3000user/lib/libgm3000.1.0.so /usr/lib/libgm3000.1.0.so
+	fi 
+	
+	# Install gnome / kde shortcuts and icons:
+	clink ()
+	{
+		ln -fs $1 $2
+		chmod 777 $2
+	}
+	
+	#创建桌面快捷图标
+	
+	if [ -d /home ]; then
+		for i in /home/*/Desktop; do
+			if [ -d $i ];then
+				clink $DESKTOP $i/$APPNAME.desktop
+	
+				DIR="$i"
+				DIR=$(echo ${DIR#*/})
+				DIR=$(echo ${DIR#*/})
+				USR=$(echo ${DIR%%/*})
+				chown $USR:$USR $i/$APPNAME.desktop
+				chmod 777 $i/$APPNAME.desktop
+			fi
+		done
+		unset i
+	fi
+	
+	if [ -d /home ]; then
+		for i in /home/*/桌面; do
+			if [ -d $i ];then
+				clink $DESKTOP $i/$APPNAME.desktop
+				
+				DIR="$i"
+				DIR=$(echo ${DIR#*/})
+				DIR=$(echo ${DIR#*/})
+				USR=$(echo ${DIR%%/*})
+				chown $USR:$USR $i/$APPNAME.desktop
+				chmod 777 $i/$APPNAME.desktop
+			fi
+		done
+		unset i
+	fi
+	
+%preun  
+	APPNAME=lm-gm3000user
+	RULE90NAME=90-lm-mtoken-user.rules
+	GMLIBS=libgm3000.1.0.so
+		
+	#删除桌面快捷图标
+	if [ -d /home ]; then
+		for i in /home/*/Desktop/$APPNAME.desktop; do
+			if [ -f $i ];then
+				rm $i
+			fi
+		done
+		unset i
+	fi
+	
+	if [ -d /home ]; then
+		for i in /home/*/桌面/$APPNAME.desktop; do
+			if [ -f $i ];then
+				rm $i
+			fi
+		done
+		unset i
+	fi
+	
+	if [ -f /usr/lib64/libgm3000.1.0.so ]; then
+		rm /usr/lib64/libgm3000.1.0.so
+	fi 
+	
+	if [ -f /usr/lib/libgm3000.1.0.so ]; then
+		rm /usr/lib/libgm3000.1.0.so
+	fi 
+
+	if [ -f /etc/udev/rules.d/90-lm-mtoken-user.rules ]; then
+		rm -rf /etc/udev/rules.d/90-lm-mtoken-user.rules
+	fi 
+	
+	if [ -f /etc/xdg/autostart/lm-gm3000user.desktop ]; then
+		rm -rf /etc/xdg/autostart/lm-gm3000user.desktop
+	fi
+	
+	if [ -f /etc/xdg/autostart/$APPNAME.desktop ];then
+		rm /etc/xdg/autostart/$APPNAME.desktop
+	fi
+	
+	pgrep GM3000User
+	if [ $? -eq 0 ];then
+		pkill -9 GM3000User
+	fi
+	
+	
+%postun
+	#卸载后
+		
+	if [ -d /opt/lm-gm3000user ]; then
+		rm -rf /opt/lm-gm3000user
+	fi
+		
+	echo "---------remove ok----------"
+
+
+%files
+%defattr(-,root,root)
+#需要卸载的文件清单
+
+/etc/udev/rules.d/90-lm-mtoken-user.rules
+/opt/lm-gm3000user/lib/libgm3000.1.0.so
+/opt/lm-gm3000user/lib/libgm3000_pkcs11.so
+/opt/lm-gm3000user/bin/GM3000User
+/opt/lm-gm3000user/config/config.ini
+/opt/lm-gm3000user/image/disk.qss
+/opt/lm-gm3000user/image/LM_32.ico
+/opt/lm-gm3000user/image/mToken.jpg
+/opt/lm-gm3000user/logo/logo.png
+/opt/lm-gm3000user/script/AppRun.sh
+/opt/lm-gm3000user/script/AppRunAuto.sh
+/opt/lm-gm3000user/script/lm-gm3000user.desktop
+/etc/xdg/autostart/lm-gm3000user.desktop
+/opt/lm-gm3000user/lib/libicudata.so.54
+/opt/lm-gm3000user/lib/libicui18n.so.54
+/opt/lm-gm3000user/lib/libicuuc.so.54
+/opt/lm-gm3000user/lib/libQt5Core.so.5
+/opt/lm-gm3000user/lib/libQt5DBus.so.5
+/opt/lm-gm3000user/lib/libQt5Gui.so.5
+/opt/lm-gm3000user/lib/libQt5Widgets.so.5
+/opt/lm-gm3000user/lib/libQt5XcbQpa.so.5
+
+/opt/lm-gm3000user/plugins/imageformats/libqwebp.so
+/opt/lm-gm3000user/plugins/imageformats/libqwbmp.so
+/opt/lm-gm3000user/plugins/imageformats/libqtiff.so
+/opt/lm-gm3000user/plugins/imageformats/libqtga.so
+/opt/lm-gm3000user/plugins/imageformats/libqmng.so
+/opt/lm-gm3000user/plugins/imageformats/libqjpeg.so
+/opt/lm-gm3000user/plugins/imageformats/libqjp2.so
+/opt/lm-gm3000user/plugins/imageformats/libqico.so
+/opt/lm-gm3000user/plugins/imageformats/libqicns.so
+/opt/lm-gm3000user/plugins/imageformats/libqgif.so
+/opt/lm-gm3000user/plugins/imageformats/libqdds.so
+/opt/lm-gm3000user/plugins/platforms/libqxcb.so
+
+/opt/lm-gm3000user/config/customer.ini
+/opt/lm-gm3000user/config/pv
+
+%clean
+rm -rf %{buildroot}
+

@@ -1,0 +1,9 @@
+Package: lm-gm3000user
+Version: 2.0.21.114
+Architecture: all
+Maintainer: akay
+Priority: optional
+Section: unknown
+Homepage: http://www.longmai.com.cn 
+Description: GM3000User
+

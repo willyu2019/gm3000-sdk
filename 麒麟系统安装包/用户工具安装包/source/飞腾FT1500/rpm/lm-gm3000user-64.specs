@@ -1,0 +1,188 @@
+%define     buildroot %{_tmppath}/%{name}-root
+%define     debug_package %{nil}
+
+Summary:    lm-gm3000user   
+Name:       lm-gm3000user
+Version:    2.0
+Release:    21.305
+
+SOURCE1:    lm-gm3000user
+
+License:    GPL
+Group:      Application
+
+%description
+
+%prep 
+
+%install
+
+rm -rf %{buildroot}
+
+#配置文件
+%{__install} -p -D -m 0777 %{SOURCE1}/config/90-lm-mtoken-user.rules			%{buildroot}/etc/udev/rules.d/90-lm-mtoken-user.rules
+%{__install} -p -D -m 0777 %{SOURCE1}/config/config.ini     	        		%{buildroot}/opt/lm-gm3000user/config/config.ini
+%{__install} -p -D -m 0777 %{SOURCE1}/config/customer.ini     	        		%{buildroot}/opt/lm-gm3000user/config/customer.ini
+%{__install} -p -D -m 0777 %{SOURCE1}/config/pv			     	        		%{buildroot}/opt/lm-gm3000user/config/pv
+
+#依赖库	
+%{__install} -p -D -m 0777 %{SOURCE1}/x64/lib/libgm3000.1.0.so	    			%{buildroot}/opt/lm-gm3000user/lib/libgm3000.1.0.so
+%{__install} -p -D -m 0777 %{SOURCE1}/x64/lib/libgm3000_pkcs11.so	    		%{buildroot}/opt/lm-gm3000user/lib/libgm3000_pkcs11.so
+	
+#应用程序	
+%{__install} -p -D -m 0777 %{SOURCE1}/x64/bin/GM3000User	        			%{buildroot}/opt/lm-gm3000user/bin/GM3000User
+	
+#资源	
+%{__install} -p -D -m 0777 %{SOURCE1}/res/disk.qss       	        			%{buildroot}/opt/lm-gm3000user/image/disk.qss
+%{__install} -p -D -m 0777 %{SOURCE1}/res/LM_32.ico       	        			%{buildroot}/opt/lm-gm3000user/image/LM_32.ico
+%{__install} -p -D -m 0777 %{SOURCE1}/res/mToken.jpg       	        			%{buildroot}/opt/lm-gm3000user/image/mToken.jpg
+	
+#图标	
+%{__install} -p -D -m 0777 %{SOURCE1}/logo/logo.png          	    			%{buildroot}/opt/lm-gm3000user/logo/logo.png
+
+#脚本
+%{__install} -p -D -m 0777 %{SOURCE1}/script/AppRun.sh          	    		%{buildroot}/opt/lm-gm3000user/script/AppRun.sh
+%{__install} -p -D -m 0777 %{SOURCE1}/script/AppRunAuto.sh        	    		%{buildroot}/opt/lm-gm3000user/script/AppRunAuto.sh
+%{__install} -p -D -m 0777 %{SOURCE1}/script/lm-gm3000user.desktop 				%{buildroot}/opt/lm-gm3000user/script/lm-gm3000user.desktop
+%{__install} -p -D -m 0777 %{SOURCE1}/script/lm-gm3000user-auto.desktop 		%{buildroot}/etc/xdg/autostart/lm-gm3000user.desktop
+
+%pre
+	#安装前
+	
+%post
+	#安装后
+	APPNAME=lm-gm3000user
+	
+	DESKTOP=/opt/lm-gm3000user/script/lm-gm3000user.desktop
+	
+	if [ -d /usr/lib64 ]; then
+		cp /opt/lm-gm3000user/lib/libgm3000.1.0.so /usr/lib64/libgm3000.1.0.so
+	else
+		cp /opt/lm-gm3000user/lib/libgm3000.1.0.so /usr/lib/libgm3000.1.0.so
+	fi 
+	
+	# Install gnome / kde shortcuts and icons:
+	clink ()
+	{
+		ln -fs $1 $2
+		chmod 777 $2
+	}
+	
+	#创建桌面快捷图标
+	
+	if [ -d /home ]; then
+		for i in /home/*/Desktop; do
+			if [ -d $i ];then
+				clink $DESKTOP $i/$APPNAME.desktop
+	
+				DIR="$i"
+				DIR=$(echo ${DIR#*/})
+				DIR=$(echo ${DIR#*/})
+				USR=$(echo ${DIR%%/*})
+				chown $USR:$USR $i/$APPNAME.desktop
+				chmod 777 $i/$APPNAME.desktop
+			fi
+		done
+		unset i
+	fi
+	
+	if [ -d /home ]; then
+		for i in /home/*/桌面; do
+			if [ -d $i ];then
+				clink $DESKTOP $i/$APPNAME.desktop
+				
+				DIR="$i"
+				DIR=$(echo ${DIR#*/})
+				DIR=$(echo ${DIR#*/})
+				USR=$(echo ${DIR%%/*})
+				chown $USR:$USR $i/$APPNAME.desktop
+				chmod 777 $i/$APPNAME.desktop
+			fi
+		done
+		unset i
+	fi
+	
+%preun  
+	APPNAME=lm-gm3000user
+	RULE90NAME=90-lm-mtoken-user.rules
+	GMLIBS=libgm3000.1.0.so
+		
+	#删除桌面快捷图标
+	if [ -d /home ]; then
+		for i in /home/*/Desktop/$APPNAME.desktop; do
+			if [ -f $i ];then
+				rm $i
+			fi
+		done
+		unset i
+	fi
+	
+	if [ -d /home ]; then
+		for i in /home/*/桌面/$APPNAME.desktop; do
+			if [ -f $i ];then
+				rm $i
+			fi
+		done
+		unset i
+	fi
+	
+	if [ -f /usr/lib64/libgm3000.1.0.so ]; then
+		rm /usr/lib64/libgm3000.1.0.so
+	fi 
+	
+	if [ -f /usr/lib/libgm3000.1.0.so ]; then
+		rm /usr/lib/libgm3000.1.0.so
+	fi 
+
+	if [ -f /etc/udev/rules.d/90-lm-mtoken-user.rules ]; then
+		rm -rf /etc/udev/rules.d/90-lm-mtoken-user.rules
+	fi 
+	
+	if [ -f /etc/xdg/autostart/lm-gm3000user.desktop ]; then
+		rm -rf /etc/xdg/autostart/lm-gm3000user.desktop
+	fi
+	
+	if [ -f /etc/xdg/autostart/$APPNAME.desktop ];then
+		rm /etc/xdg/autostart/$APPNAME.desktop
+	fi
+	
+	pgrep GM3000User
+	if [ $? -eq 0 ];then
+		pkill -9 GM3000User
+	fi
+	
+	
+%postun
+	#卸载后
+		
+	if [ -d /opt/lm-gm3000user ]; then
+		rm -rf /opt/lm-gm3000user
+	fi
+		
+	echo "---------remove ok----------"
+
+
+%files
+%defattr(-,root,root)
+#需要卸载的文件清单
+
+/etc/udev/rules.d/90-lm-mtoken-user.rules
+/opt/lm-gm3000user/lib/libgm3000.1.0.so
+/opt/lm-gm3000user/lib/libgm3000_pkcs11.so
+/opt/lm-gm3000user/bin/GM3000User
+/opt/lm-gm3000user/config/config.ini
+/opt/lm-gm3000user/image/disk.qss
+/opt/lm-gm3000user/image/LM_32.ico
+/opt/lm-gm3000user/image/mToken.jpg
+/opt/lm-gm3000user/logo/logo.png
+/opt/lm-gm3000user/script/AppRun.sh
+/opt/lm-gm3000user/script/AppRunAuto.sh
+/opt/lm-gm3000user/script/lm-gm3000user.desktop
+/etc/xdg/autostart/lm-gm3000user.desktop
+
+/opt/lm-gm3000user/config/customer.ini
+/opt/lm-gm3000user/config/pv
+
+%clean
+rm -rf %{buildroot}
+

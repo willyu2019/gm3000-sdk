@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#判断 $installPath 目录下是否存在配置文件"90-mtoken.rules",不存在执行拷贝命令
+#配置文件 "90-mtoken.rules" 用来给设备增加权限
+
+installPath=/opt/apps/com.longmai.gm3000admin/files/config
+
+if [ -f /etc/udev/rules.d/90-mtoken.rules ]; then
+	chmod 777 /etc/udev/rules.d/90-mtoken.rules
+else
+	cp $installPath/90-mtoken.rules /etc/udev/rules.d/90-mtoken.rules
+	chmod 777 /etc/udev/rules.d/90-mtoken.rules
+fi 

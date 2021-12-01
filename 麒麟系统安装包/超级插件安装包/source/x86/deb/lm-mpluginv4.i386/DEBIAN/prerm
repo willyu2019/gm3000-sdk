@@ -1,0 +1,43 @@
+#!/bin/sh
+
+installPath=/opt/mpluginv4
+
+#结束服务进程
+if [ $(ps -ef|grep mPluginV4 |grep -v grep | wc -l) -gt 0 ]; then
+		killall mPluginV4
+fi 
+
+#卸载服务证书
+if [ "$( which certutil )" = "" ];then
+	echo " "
+else
+	### For cert8 (legacy - DBM)
+	for certDB in $(find /home -name "cert8.db")
+	do
+	    certdir=$(dirname ${certDB});
+	    #certutil -D -n "mPluginCA" -d dbm:${certdir}
+	done
+
+	### For cert9 (SQL)
+	for certDB in $(find /home -name "cert9.db")
+	do
+	    certdir=$(dirname ${certDB});
+	    #certutil -D -n "mPluginCA" -d dbm:${certdir}
+	done
+fi
+
+#删除链接文件
+if [ -f /etc/udev/rules.d/90-lm-mtoken-plugin.rules ]; then
+	rm /etc/udev/rules.d/90-lm-mtoken-plugin.rules
+fi 
+
+if [ -f /etc/xdg/autostart/mpluginv4.desktop ]; then
+	rm  /etc/xdg/autostart/mpluginv4.desktop 
+fi
+
+#删除链接目录
+if [ -d $installPath ]; then
+	rm -Rf $installPath 
+fi 
+
+echo "---------remove ok----------"

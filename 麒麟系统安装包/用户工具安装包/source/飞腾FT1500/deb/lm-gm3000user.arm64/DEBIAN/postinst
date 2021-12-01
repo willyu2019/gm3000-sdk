@@ -1,0 +1,55 @@
+#!/bin/sh
+
+APPNAME=lm-gm3000user
+GMLIB=/opt/lm-gm3000user/lib/libgm3000.1.0.so
+DESKTOP=/opt/lm-gm3000user/script/lm-gm3000user.desktop
+
+#将skf库拷贝到系统目录下
+
+if [ -d /usr/lib64 ]; then
+	cp $GMLIB /usr/lib64/libgm3000.1.0.so
+fi
+
+if [ -d /usr/lib ]; then
+	cp $GMLIB /usr/lib/libgm3000.1.0.so
+fi 
+
+# Install gnome / kde shortcuts and icons:
+clink ()
+{
+	ln -fs $1 $2
+	chmod 777 $2
+}
+
+#创建桌面快捷图标
+if [ -d /home ]; then
+	for i in /home/*/Desktop; do
+		if [ -d $i ];then
+			clink $DESKTOP $i/$APPNAME.desktop
+
+			DIR="$i"
+			DIR=$(echo ${DIR#*/})
+			DIR=$(echo ${DIR#*/})
+			USR=$(echo ${DIR%%/*})
+			chown $USR:$USR $i/$APPNAME.desktop
+			chmod 777 $i/$APPNAME.desktop
+		fi
+	done
+	unset i
+fi
+
+if [ -d /home ]; then
+	for i in /home/*/桌面; do
+		if [ -d $i ];then
+			clink $DESKTOP $i/$APPNAME.desktop
+			
+			DIR="$i"
+			DIR=$(echo ${DIR#*/})
+			DIR=$(echo ${DIR#*/})
+			USR=$(echo ${DIR%%/*})
+			chown $USR:$USR $i/$APPNAME.desktop
+			chmod 777 $i/$APPNAME.desktop
+		fi
+	done
+	unset i
+fi

@@ -1,0 +1,52 @@
+#!/bin/sh
+
+APPNAME=lm-gm3000admin
+DESKTOP=/opt/lm-gm3000admin/script/lm-gm3000admin.desktop
+GMLIBS=libgm3000.1.0.so
+
+#将skf库拷贝到系统目录下
+
+if [ -d /usr/lib64 ]; then
+	cp /opt/lm-gm3000admin/lib/$GMLIBS /usr/lib64/$GMLIBS
+else
+	cp /opt/lm-gm3000admin/lib/$GMLIBS /usr/lib/$GMLIBS
+fi 
+
+clink ()
+{
+	ln -fs $1 $2
+	chmod 777 $2
+}
+
+#创建桌面快捷图标
+if [ -d /home ]; then
+	for i in /home/*/Desktop; do
+		if [ -d $i ];then
+			clink $DESKTOP $i/$APPNAME.desktop
+
+			DIR="$i"
+			DIR=$(echo ${DIR#*/})
+			DIR=$(echo ${DIR#*/})
+			USR=$(echo ${DIR%%/*})
+			chown $USR:$USR $i/$APPNAME.desktop
+			chmod 777 $i/$APPNAME.desktop
+		fi
+	done
+	unset i
+fi
+
+if [ -d /home ]; then
+	for i in /home/*/桌面; do
+		if [ -d $i ];then
+			clink $DESKTOP $i/$APPNAME.desktop
+			
+			DIR="$i"
+			DIR=$(echo ${DIR#*/})
+			DIR=$(echo ${DIR#*/})
+			USR=$(echo ${DIR%%/*})
+			chown $USR:$USR $i/$APPNAME.desktop
+			chmod 777 $i/$APPNAME.desktop
+		fi
+	done
+	unset i
+fi

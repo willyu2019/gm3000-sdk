@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=/opt/mpluginv4/script/run.sh
+Type=Application
+Terminal=false
+Name=mPluginV4
+GenericName=mPluginV4

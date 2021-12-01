@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=GM3000User
+GenericName=GM3000User
+Comment=GM3000User
+Comment[zh_CN]=GM3000User
+Exec=/opt/apps/com.longmai.gm3000user/files/script/AppRunAuto.sh
+Terminal=false
+Type=Application
+Icon=/opt/apps/com.longmai.gm3000user/entries/icons/hicolor/scalable/apps/gm3000.svg
+Categories=Utility;Application;
+StartupNotify=false
+

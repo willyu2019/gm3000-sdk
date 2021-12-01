@@ -1,0 +1,56 @@
+#!/bin/sh
+
+APPNAME=lm-gm3000admin
+RULE90NAME=90-lm-mtoken-admin.rules
+GMLIBS=libgm3000.1.0.so
+
+if [ -f /etc/udev/rules.d/$RULE90NAME ]; then
+	rm /etc/udev/rules.d/$RULE90NAME
+fi 
+
+if [ -f /usr/lib64/$GMLIBS ]; then
+	rm /usr/lib64/$GMLIBS
+fi 
+
+if [ -f /usr/lib/$GMLIBS ]; then
+	rm /usr/lib/$GMLIBS
+fi 
+
+#删除桌面快捷图标
+if [ -d /home ]; then
+	for i in /home/*/Desktop/$APPNAME.desktop; do
+		if [ -f $i ];then
+			rm $i
+		fi
+	done
+	unset i
+fi
+
+if [ -d /home ]; then
+	for i in /home/*/桌面/$APPNAME.desktop; do
+		if [ -f $i ];then
+			rm $i
+		fi
+	done
+	unset i
+fi
+
+#删除其它链接文件
+
+if [ -f /usr/share/applications/$APPNAME.desktop ];then
+	rm /usr/share/applications/$APPNAME.desktop
+fi
+
+if [ -f /etc/xdg/autostart/$APPNAME.desktop ];then
+	rm /etc/xdg/autostart/$APPNAME.desktop
+fi
+
+pgrep GM3000Admin
+if [ $? -eq 0 ];then
+	pkill -9 GM3000Admin
+fi
+
+if [ -d /opt/$APPNAME ]; then
+	rm -Rf /opt/$APPNAME
+fi 
+

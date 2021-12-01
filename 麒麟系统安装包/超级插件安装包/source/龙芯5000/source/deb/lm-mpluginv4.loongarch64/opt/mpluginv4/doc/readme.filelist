@@ -1,0 +1,19 @@
+文件列表
+
+/etc/udev/rules.d/90-mtoken.rules
+/etc/xdg/autostart/mpluginv4.desktop
+
+/opt/mpluginv4/bin/mPluginV4
+/opt/mpluginv4/bin/server.key
+/opt/mpluginv4/bin/server.pem
+/opt/mpluginv4/conf/server.key
+/opt/mpluginv4/conf/server.pem
+/opt/mpluginv4/doc/readme.filelist
+/opt/mpluginv4/lib/libdispatch.so
+/opt/mpluginv4/lib/libgm3000.1.0.so
+/opt/mpluginv4/lib/libstd.so
+/opt/mpluginv4/script/install.sh	用于安装certutil工具
+/opt/mpluginv4/script/run.sh		用于启动主进程mpluginv4
+
+/usr/lib/libgm3000.1.0.so
+/usr/lib64/libgm3000.1.0.so

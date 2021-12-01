@@ -1,0 +1,17 @@
+{
+  "appid": "com.longmai.mpluginv4",
+  "name": "mPluginV4",
+  "version": "2.0.21.118",
+  "arch": [ "arm64" ],
+  "permissions": {
+    "autostart": true,
+    "notification": false,
+    "trayicon": false,
+    "clipboard": false,
+    "account": false,
+    "bluetooth": false,
+    "camera": false,
+    "audio_record": false,
+    "installed_apps": false
+  }
+}

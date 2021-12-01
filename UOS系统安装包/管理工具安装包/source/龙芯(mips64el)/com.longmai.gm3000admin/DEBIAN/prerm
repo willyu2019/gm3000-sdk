@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#卸载程序时杀掉进程
+pgrep GM3000Admin
+if [ $? -eq 0 ];then
+	pkill -9 GM3000Admin
+fi
+
